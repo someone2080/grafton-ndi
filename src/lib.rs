@@ -1053,16 +1053,15 @@ impl Tally {
 }
 
 #[derive(Debug)]
-pub struct Send<'a> {
+pub struct Send {
     instance: NDIlib_send_instance_t,
-    ndi: std::marker::PhantomData<&'a NDI>,
 }
 
-unsafe impl<'a> std::marker::Send for Send<'a> {}
-unsafe impl<'a> std::marker::Sync for Send<'a> {}
+unsafe impl std::marker::Send for Send {}
+unsafe impl std::marker::Sync for Send {}
 
-impl<'a> Send<'a> {
-    pub fn new(_ndi: &'a NDI, create_settings: Sender) -> Result<Self, Error> {
+impl Send {
+    pub fn new(create_settings: Sender) -> Result<Self, Error> {
         let p_ndi_name = CString::new(create_settings.name).map_err(Error::InvalidCString)?;
         let p_groups = match create_settings.groups {
             Some(ref groups) => CString::new(groups.clone())
@@ -1086,7 +1085,6 @@ impl<'a> Send<'a> {
         } else {
             Ok(Send {
                 instance,
-                ndi: std::marker::PhantomData,
             })
         }
     }
@@ -1162,7 +1160,7 @@ impl<'a> Send<'a> {
     }
 }
 
-impl<'a> Drop for Send<'a> {
+impl Drop for Send {
     fn drop(&mut self) {
         unsafe {
             NDIlib_send_destroy(self.instance);
