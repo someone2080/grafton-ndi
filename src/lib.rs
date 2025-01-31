@@ -1059,6 +1059,7 @@ pub struct Send<'a> {
 }
 
 unsafe impl<'a> std::marker::Send for Send<'a> {}
+unsafe impl<'a> std::marker::Sync for Send<'a> {}
 
 impl<'a> Send<'a> {
     pub fn new(_ndi: &'a NDI, create_settings: Sender) -> Result<Self, Error> {
