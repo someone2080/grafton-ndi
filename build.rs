@@ -23,6 +23,10 @@ fn main() {
 
     // Determine the library name and linking type based on the platform
     let (lib_name, link_type) = if cfg!(target_os = "macos") {
+        let lib_path = format!("{}/lib/macOS", ndi_sdk_path);
+        // Inform cargo about the search path for the linker and the library to link against
+        println!("cargo:rustc-link-search=native={}", lib_path);
+
         // For Unix-like systems, use the shared library `libndi.so`
         ("ndi", "dylib") // Use "dylib" for dynamic linking
     } else if cfg!(target_os = "linux") {
