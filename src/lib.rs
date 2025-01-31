@@ -675,8 +675,8 @@ pub enum AudioType {
     Max,
 }
 
-impl From<u32> for AudioType {
-    fn from(value: u32) -> Self {
+impl From<i32> for AudioType {
+    fn from(value: i32) -> Self {
         if value == NDIlib_FourCC_audio_type_e_NDIlib_FourCC_audio_type_FLTP {
             AudioType::FLTP
         } else {
@@ -685,7 +685,7 @@ impl From<u32> for AudioType {
     }
 }
 
-impl From<AudioType> for u32 {
+impl From<AudioType> for i32 {
     fn from(audio_type: AudioType) -> Self {
         match audio_type {
             AudioType::FLTP => NDIlib_FourCC_audio_type_e_NDIlib_FourCC_audio_type_FLTP,
